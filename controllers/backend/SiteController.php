@@ -4,7 +4,7 @@ namespace kouosl\site\controllers\backend;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use common\models\LoginForm;
+use kouosl\site\models\LoginForm;
 
 /**
  * Site controller

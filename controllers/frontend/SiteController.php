@@ -1,5 +1,5 @@
 <?php
-namespace kouosl\site\controllers\backend;
+namespace kouosl\site\controllers\frontend;
 
 use Yii;
 use yii\base\InvalidParamException;
