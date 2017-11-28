@@ -147,6 +147,7 @@ class SiteController extends DefaultController
      */
     public function actionSignup()
     {
+
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post())) {
             if ($user = $model->signup()) {
@@ -208,5 +209,10 @@ class SiteController extends DefaultController
         return $this->render('resetPassword', [
             'model' => $model,
         ]);
+    }
+
+    public function actionLang($lang){
+        yii::$app->session->set('lang',$lang);
+        return $this->goHome();
     }
 }
