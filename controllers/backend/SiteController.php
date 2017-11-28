@@ -4,7 +4,7 @@ namespace kouosl\site\controllers\backend;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use common\models\LoginForm;
+use kouosl\site\models\LoginForm;
 
 /**
  * Site controller
@@ -21,7 +21,7 @@ class SiteController extends DefaultController
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['login', 'error'],
+                        'actions' => ['login', 'error','lang'],
                         'allow' => true,
                     ],
                     [
@@ -92,6 +92,11 @@ class SiteController extends DefaultController
     {
         Yii::$app->user->logout();
 
+        return $this->goHome();
+    }
+
+    public function actionLang($lang){
+        yii::$app->session->set('lang',$lang);
         return $this->goHome();
     }
 }
