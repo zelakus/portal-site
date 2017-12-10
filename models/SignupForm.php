@@ -23,7 +23,7 @@ class SignupForm extends Model
         return [
             ['username', 'trim'],
             ['username', 'required'],
-            ['username', 'unique', 'targetClass' => '\kouosl\user\models\User', 'message' => Module::t('site','This username has already been taken.')],
+            ['username', 'unique', 'targetClass' => '\kouosl\user\models\User', 'message' => 'This username has already been taken.'],
             ['username', 'string', 'min' => 2, 'max' => 255],
 
             ['email', 'trim'],
