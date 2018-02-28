@@ -9,7 +9,7 @@ use kouosl\site\models\LoginForm;
 /**
  * Site controller
  */
-class SiteController extends DefaultController
+class AuthController extends DefaultController
 {
     /**
      * @inheritdoc

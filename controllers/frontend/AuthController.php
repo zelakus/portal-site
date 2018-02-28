@@ -15,7 +15,7 @@ use kouosl\site\models\ContactForm;
 /**
  * Site controller
  */
-class SiteController extends DefaultController
+class AuthController extends DefaultController
 {
     /**
      * @inheritdoc
@@ -37,6 +37,7 @@ class SiteController extends DefaultController
                         'allow' => true,
                         'roles' => ['@'],
                     ],
+             
                 ],
             ],
             'verbs' => [
@@ -60,7 +61,7 @@ class SiteController extends DefaultController
             'captcha' => [
                 'class' => 'yii\captcha\CaptchaAction',
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
-            ],
+            ]
         ];
     }
 
@@ -93,6 +94,11 @@ class SiteController extends DefaultController
                 'model' => $model,
             ]);
         }
+        // \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        // return [
+        //     'message' => 'hello world',
+        //     'code' => 100,
+        // ];
     }
 
     /**
