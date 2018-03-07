@@ -16,28 +16,30 @@ class AuthController extends DefaultController
      */
     public function behaviors()
     {
-        return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                    [
-                        'actions' => ['login', 'error','lang'],
-                        'allow' => true,
-                    ],
-                    [
-                        'actions' => ['logout', 'index'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'logout' => ['post'],
-                ],
-            ],
-        ];
+        // return [
+        //     'access' => [
+        //         'class' => AccessControl::className(),
+        //         'rules' => [
+        //             [
+        //                 'actions' => ['login', 'error','lang'],
+        //                 'allow' => true,
+        //             ],
+        //             [
+        //                 'actions' => ['logout', 'index'],
+        //                 'allow' => true,
+        //                 'roles' => ['@'],
+        //             ],
+        //         ],
+        //     ],
+        //     'verbs' => [
+        //         'class' => VerbFilter::className(),
+        //         'actions' => [
+        //             'logout' => ['post'],
+        //         ],
+        //     ],
+        // ];
+        $behaviors = parent::behaviors();
+        return $behaviors;
     }
 
     /**

@@ -22,6 +22,8 @@ class AuthController extends DefaultController
      */
     public function behaviors()
     {
+        // $behaviors = parent::behaviors();
+        // return $behaviors;
         return [
             'access' => [
                 'class' => AccessControl::className(),
@@ -82,23 +84,39 @@ class AuthController extends DefaultController
      */
     public function actionLogin()
     {
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
+        $request = Yii::$app->request;
 
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        } else {
-            return $this->render('login', [
-                'model' => $model,
-            ]);
+        if ($request->isPost) {
+            \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+            $model = new LoginForm();
+
+            if ($model->load(Yii::$app->getRequest()->getBodyParams(), '') && $model->login()) {
+                return ['access_token' => Yii::$app->user->identity->getAuthKey()];
+            }
+            elseif ($model->load(Yii::$app->request->post()) && $model->login()) {
+                return $this->goBack();
+            } else {
+                return $this->render('login', [
+                    'model' => $model,
+                ]);
+            }
+
         }
-        // \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        // return [
-        //     'message' => 'hello world',
-        //     'code' => 100,
-        // ];
+        else{
+            if (!Yii::$app->user->isGuest) {
+                return $this->goHome();
+            }
+    
+            $model = new LoginForm();
+            if ($model->load(Yii::$app->request->post()) && $model->login()) {
+                return $this->goBack();
+            } else {
+                return $this->render('login', [
+                    'model' => $model,
+                ]);
+            }
+        }
     }
 
     /**
