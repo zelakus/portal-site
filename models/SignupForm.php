@@ -1,10 +1,8 @@
 <?php
 namespace kouosl\site\models;
-
 use kouosl\site\Module;
 use yii\base\Model;
 use kouosl\user\models\User;
-
 /**
  * Signup form
  */
@@ -14,6 +12,7 @@ class SignupForm extends Model
     public $email;
     public $password;
     public $verifyCode;
+
     /**
      * @inheritdoc
      */
@@ -24,18 +23,17 @@ class SignupForm extends Model
             ['username', 'required'],
             ['username', 'unique', 'targetClass' => '\kouosl\user\models\User', 'message' => 'This username has already been taken.'],
             ['username', 'string', 'min' => 2, 'max' => 255],
-
             ['email', 'trim'],
             ['email', 'required'],
             ['email', 'email'],
             ['email', 'string', 'max' => 255],
             ['email', 'unique', 'targetClass' => '\kouosl\user\models\User', 'message' => 'This email address has already been taken.'],
-            ['verifyCode', 'captcha','captchaAction'=>'/site/auth/captcha'],
+            ['password', 'required'],
+            ['password', 'string', 'min' => 6],
+            ['verifyCode', 'captcha','captchaAction'=>'/site/auth/captcha']
 
         ];
-   
     }
-
     /**
      * Signs user up.
      *

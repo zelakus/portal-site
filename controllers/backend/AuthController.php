@@ -16,30 +16,32 @@ class AuthController extends DefaultController
      */
     public function behaviors()
     {
-        // return [
-        //     'access' => [
-        //         'class' => AccessControl::className(),
-        //         'rules' => [
-        //             [
-        //                 'actions' => ['login', 'error','lang'],
-        //                 'allow' => true,
-        //             ],
-        //             [
-        //                 'actions' => ['logout', 'index'],
-        //                 'allow' => true,
-        //                 'roles' => ['@'],
-        //             ],
-        //         ],
-        //     ],
-        //     'verbs' => [
-        //         'class' => VerbFilter::className(),
-        //         'actions' => [
-        //             'logout' => ['post'],
-        //         ],
-        //     ],
-        // ];
-        $behaviors = parent::behaviors();
-        return $behaviors;
+       
+        return array_merge(
+            parent::behaviors(),
+            [
+                'access' => [
+                    'class' => AccessControl::className(),
+                    'rules' => [
+                        [
+                            'actions' => ['login', 'error','lang'],
+                            'allow' => true,
+                        ],
+                        [
+                            'actions' => ['logout', 'index', 'home'],
+                            'allow' => true,
+                            'roles' => ['@'],
+                        ],
+                    ],
+                ],
+                'verbs' => [
+                    'class' => VerbFilter::className(),
+                    'actions' => [
+                        'logout' => ['post'],
+                    ],
+                ]
+        ]);
+       
     }
 
     /**
@@ -63,7 +65,10 @@ class AuthController extends DefaultController
     {
         return $this->render('index');
     }
-
+    public function actionHome()
+    {
+        return $this->render('home');
+    }
     /**
      * Login action.
      *

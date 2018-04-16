@@ -1,6 +1,6 @@
 <?php
 namespace kouosl\site\controllers\frontend;
-
+use yii\helpers\ArrayHelper;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
@@ -11,7 +11,7 @@ use kouosl\site\models\PasswordResetRequestForm;
 use kouosl\site\models\ResetPasswordForm;
 use kouosl\site\models\SignupForm;
 use kouosl\site\models\ContactForm;
-
+use yii\filters\Cors;
 /**
  * Site controller
  */
@@ -22,33 +22,27 @@ class AuthController extends DefaultController
      */
     public function behaviors()
     {
-        // $behaviors = parent::behaviors();
-        // return $behaviors;
-        return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'only' => ['logout', 'signup'],
-                'rules' => [
-                    [
-                        'actions' => ['signup'],
-                        'allow' => true,
-                        'roles' => ['?'],
-                    ],
-                    [
-                        'actions' => ['logout'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-             
-                ],
-            ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'logout' => ['post'],
-                ],
-            ],
-        ];
+        return array_merge(
+            parent::behaviors(),
+            [
+                    'access' => [
+                        'class' => AccessControl::className(),
+                        'only' => ['logout', 'signup','contact','about'],
+                        'rules' => [
+                            [
+                                'actions' => ['signup','contact','about'],
+                                'allow' => true,
+                                'roles' => ['?'],
+                            ],
+                            [
+                                'actions' => ['logout','contact','about'],
+                                'allow' => true,
+                                'roles' => ['@'],
+                            ],
+                     
+                        ],
+                    ]
+        ]);
     }
 
     /**
@@ -76,6 +70,10 @@ class AuthController extends DefaultController
     {
         return $this->render('index');
     }
+    public function actionHome()
+    {
+        return $this->render('home');
+    }
 
     /**
      * Logs in a user.
@@ -85,18 +83,20 @@ class AuthController extends DefaultController
     public function actionLogin()
     {
         $request = Yii::$app->request;
-
         if ($request->isPost) {
-            \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 
             $model = new LoginForm();
 
             if ($model->load(Yii::$app->getRequest()->getBodyParams(), '') && $model->login()) {
-                return ['access_token' => Yii::$app->user->identity->getAuthKey()];
-            }
+                \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+                if($model->login())
+                    return ['access_token' => Yii::$app->user->identity->getAuthKey(),'status' => true];
+
+            }   
             elseif ($model->load(Yii::$app->request->post()) && $model->login()) {
                 return $this->goBack();
-            } else {
+            } else { 
                 return $this->render('login', [
                     'model' => $model,
                 ]);
@@ -180,7 +180,6 @@ class AuthController extends DefaultController
                 }
             }
         }
-
         return $this->render('signup', [
             'model' => $model,
         ]);
