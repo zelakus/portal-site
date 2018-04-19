@@ -17,6 +17,10 @@ use yii\filters\Cors;
  */
 class AuthController extends DefaultController
 {
+    public function beforeAction($action) {
+        $this->enableCsrfValidation = false;
+        return parent::beforeAction($action);
+    }
     /**
      * @inheritdoc
      */
@@ -86,22 +90,24 @@ class AuthController extends DefaultController
         if ($request->isPost) {
 
             $model = new LoginForm();
-
-            if ($model->load(Yii::$app->getRequest()->getBodyParams(), '') && $model->login()) {
-                \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-
-                if($model->login())
-                    return ['access_token' => Yii::$app->user->identity->getAuthKey(),'status' => true];
-
-            }   
-            elseif ($model->load(Yii::$app->request->post()) && $model->login()) {
-                return $this->goBack();
-            } else { 
-                return $this->render('login', [
-                    'model' => $model,
-                ]);
+            $response =  $request->post('response');
+            if($response == null){
+                if ($model->load(Yii::$app->request->post()) && $model->login()) {
+                    return $this->goBack();
+                } else {
+                    return $this->render('login', [
+                        'model' => $model,
+                    ]);
+                }
             }
+            else {
+                \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+                if($model->load(Yii::$app->getRequest()->getBodyParams(),'') && $model->login())
+                    return ['access_token' => Yii::$app->user->identity->getAuthKey(),'status' => true];
+                else
+                    return ['access_token' => '','status' => false];
 
+            }
         }
         else{
             if (!Yii::$app->user->isGuest) {

@@ -21,97 +21,50 @@ class SettingController extends DefaultController
 
     public function actionIndex()
     {
-        $searchModel = new SettingSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-            
-        ]);
-    }
-
-    /**
-     * Displays a single Settings model.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
-
-    /**
-     * Creates a new Settings model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        $model = new Setting();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-            
+        $settings = Setting::find()->asArray()->all();
+        foreach ($settings as $setting){
+            $settings[$setting['setting_key']] = $setting['value'];
         }
-
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+        
+        return $this->render('index',$settings);
     }
 
-    /**
-     * Updates an existing Settings model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
+    public function beforeAction($action) {
+        $this ->enableCsrfValidation = false;
+        return parent::beforeAction($action);
+    }
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+
+    public function actionChange(){
+        if(Yii::$app->request->isAjax){
+            \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            $postParams = Yii::$app->request->post();
+            $settings = Setting::findOne(['setting_key' =>  $postParams['type']]);
+            switch ($postParams['type']) {
+                case 'signup':
+                    $settings->value = $postParams['signupAllow'];
+                    break;
+                case 'contact':
+                      $settings->value = $postParams['contactAllow'];
+                      break;
+                 case 'login':
+                     $settings->value = $postParams['loginAllow'];
+                    break;
+                case 'about':
+                     $settings->value = $postParams['aboutAllow'];
+                    break;
+                case 'language':
+                    $settings->value = $postParams['language'];
+                   break;
+                default:
+                    # code...
+                    break;
+            }
+            return ['result' => $settings->save()] ;
+
         }
-
-        return $this->render('update', [
-            'model' => $model,
-        ]);
     }
 
-    /**
-     * Deletes an existing Settings model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
-    }
-
-    /**
-     * Finds the Settings model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Setting the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($id)
-    {
-        if (($model = Setting::findOne($id)) !== null) {
-            return $model;
-        }   
-
-        throw new NotFoundHttpException('The requested page does not exist.');
-    }
 
     
 }

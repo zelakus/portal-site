@@ -5,6 +5,7 @@ use Yii;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use kouosl\site\models\LoginForm;
+use \kouosl\site\models\Setting;
 
 /**
  * Site controller
@@ -55,7 +56,10 @@ class AuthController extends DefaultController
             ],
         ];
     }
-
+    public function beforeAction($action) {
+        $this->enableCsrfValidation = false;
+        return parent::beforeAction($action);
+    }
     /**
      * Displays homepage.
      *
@@ -76,17 +80,42 @@ class AuthController extends DefaultController
      */
     public function actionLogin()
     {
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
+        $request = Yii::$app->request;
+        if ($request->isPost) {
 
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        } else {
-            return $this->render('login', [
-                'model' => $model,
-            ]);
+            $model = new LoginForm();
+            $response =  $request->post('response');
+            if($response == null){
+                if ($model->load(Yii::$app->request->post()) && $model->login()) {
+                    return $this->goBack();
+                } else {
+                    return $this->render('login', [
+                        'model' => $model,
+                    ]);
+                }
+            }
+            else {
+                \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+                if($model->load(Yii::$app->getRequest()->getBodyParams(),'') && $model->login())
+                    return ['access_token' => Yii::$app->user->identity->getAuthKey(),'status' => true];
+                else
+                    return ['access_token' => '','status' => false];
+
+            }
+        }
+        else{
+            if (!Yii::$app->user->isGuest) {
+                return $this->goHome();
+            }
+    
+            $model = new LoginForm();
+            if ($model->load(Yii::$app->request->post()) && $model->login()) {
+                return $this->goBack();
+            } else {
+                return $this->render('login', [
+                    'model' => $model,
+                ]);
+            }
         }
     }
 
@@ -103,7 +132,8 @@ class AuthController extends DefaultController
     }
 
     public function actionLang($lang){
-        yii::$app->session->set('lang',$lang);
+        
+       yii::$app->session->set('lang',$lang);
         return $this->goHome();
     }
 }
