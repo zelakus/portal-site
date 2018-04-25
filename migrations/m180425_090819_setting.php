@@ -1,9 +1,11 @@
 <?php
 
-use yii\db\Schema;
 use yii\db\Migration;
 
-class m130524_201442_sample extends Migration
+/**
+ * Class m180425_090819_setting
+ */
+class m180425_090819_setting extends Migration
 {
     public function up()
     {
@@ -13,30 +15,30 @@ class m130524_201442_sample extends Migration
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
         }
 
-        $this->createTable('{{%setting}}', [
+        $this->createTable('setting', [
             'id' => $this->primaryKey(),
             'setting_key' => $this->string(200)->notNull(),
 			'value' => $this->string(200)->notNull(),
         ], $tableOptions);
 
-        $this->insert('{{%setting}}', [
+        $this->insert('setting', [
             'setting_key' => 'signup',
             'value' => 'true',
         ]);
 
-        $this->insert('{{%setting}}', [
-            'set    ting_key' => 'about',
+        $this->insert('setting', [
+            'setting_key' => 'about',
             'value' => 'true',
         ]);
-        $this->insert('{{%setting}}', [
+        $this->insert('setting', [
             'setting_key' => 'login',
             'value' => 'true',
         ]);
-        $this->insert('{{%setting}}', [
+        $this->insert('setting', [
             'setting_key' => 'contact',
             'value' => 'true',
         ]);
-        $this->insert('{{%setting}}', [
+        $this->insert('setting', [
             'setting_key' => 'language',
             'value' => 'EN',
         ]);
@@ -45,6 +47,6 @@ class m130524_201442_sample extends Migration
 
     public function down()
     {
-        $this->dropTable('{{%setting}}');
+        $this->dropTable('setting');
     }
 }
