@@ -74,11 +74,7 @@ class AuthController extends DefaultController
     {
         return $this->render('index');
     }
-    public function actionHome()
-    {
-        return $this->render('home');
-    }
-
+  
     /**
      * Logs in a user.
      *

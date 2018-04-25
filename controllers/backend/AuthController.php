@@ -29,7 +29,7 @@ class AuthController extends DefaultController
                             'allow' => true,
                         ],
                         [
-                            'actions' => ['logout', 'index', 'home'],
+                            'actions' => ['logout', 'index'],
                             'allow' => true,
                             'roles' => ['@'],
                         ],
@@ -69,10 +69,7 @@ class AuthController extends DefaultController
     {
         return $this->render('index');
     }
-    public function actionHome()
-    {
-        return $this->render('home');
-    }
+   
     /**
      * Login action.
      *
