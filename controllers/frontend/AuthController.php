@@ -1,6 +1,6 @@
 <?php
 namespace kouosl\site\controllers\frontend;
-
+use yii\helpers\ArrayHelper;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
@@ -11,41 +11,42 @@ use kouosl\site\models\PasswordResetRequestForm;
 use kouosl\site\models\ResetPasswordForm;
 use kouosl\site\models\SignupForm;
 use kouosl\site\models\ContactForm;
-
+use yii\filters\Cors;
 /**
  * Site controller
  */
-class SiteController extends DefaultController
+class AuthController extends DefaultController
 {
+    public function beforeAction($action) {
+        $this->enableCsrfValidation = false;
+        return parent::beforeAction($action);
+    }
     /**
      * @inheritdoc
      */
     public function behaviors()
     {
-        return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'only' => ['logout', 'signup'],
-                'rules' => [
-                    [
-                        'actions' => ['signup'],
-                        'allow' => true,
-                        'roles' => ['?'],
-                    ],
-                    [
-                        'actions' => ['logout'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'logout' => ['post'],
-                ],
-            ],
-        ];
+        return array_merge(
+            parent::behaviors(),
+            [
+                    'access' => [
+                        'class' => AccessControl::className(),
+                        'only' => ['logout', 'signup','contact','about'],
+                        'rules' => [
+                            [
+                                'actions' => ['signup','contact','about'],
+                                'allow' => true,
+                                'roles' => ['?'],
+                            ],
+                            [
+                                'actions' => ['logout','contact','about'],
+                                'allow' => true,
+                                'roles' => ['@'],
+                            ],
+                     
+                        ],
+                    ]
+        ]);
     }
 
     /**
@@ -60,7 +61,7 @@ class SiteController extends DefaultController
             'captcha' => [
                 'class' => 'yii\captcha\CaptchaAction',
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
-            ],
+            ]
         ];
     }
 
@@ -73,7 +74,7 @@ class SiteController extends DefaultController
     {
         return $this->render('index');
     }
-
+  
     /**
      * Logs in a user.
      *
@@ -81,17 +82,42 @@ class SiteController extends DefaultController
      */
     public function actionLogin()
     {
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
+        $request = Yii::$app->request;
+        if ($request->isPost) {
 
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        } else {
-            return $this->render('login', [
-                'model' => $model,
-            ]);
+            $model = new LoginForm();
+            $response =  $request->post('response');
+            if($response == null){
+                if ($model->load(Yii::$app->request->post()) && $model->login()) {
+                    return $this->goBack();
+                } else {
+                    return $this->render('login', [
+                        'model' => $model,
+                    ]);
+                }
+            }
+            else {
+                \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+                if($model->load(Yii::$app->getRequest()->getBodyParams(),'') && $model->login())
+                    return ['access_token' => Yii::$app->user->identity->getAuthKey(),'status' => true];
+                else
+                    return ['access_token' => '','status' => false];
+
+            }
+        }
+        else{
+            if (!Yii::$app->user->isGuest) {
+                return $this->goHome();
+            }
+    
+            $model = new LoginForm();
+            if ($model->load(Yii::$app->request->post()) && $model->login()) {
+                return $this->goBack();
+            } else {
+                return $this->render('login', [
+                    'model' => $model,
+                ]);
+            }
         }
     }
 
@@ -156,7 +182,6 @@ class SiteController extends DefaultController
                 }
             }
         }
-
         return $this->render('signup', [
             'model' => $model,
         ]);
