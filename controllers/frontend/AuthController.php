@@ -18,9 +18,13 @@ use yii\filters\Cors;
 class AuthController extends DefaultController
 {
     public function beforeAction($action) {
-        $this->enableCsrfValidation = false;
+       
+        if ($action->id == 'login') {
+            $this->enableCsrfValidation = false;
+        } 
         return parent::beforeAction($action);
     }
+    
     /**
      * @inheritdoc
      */
