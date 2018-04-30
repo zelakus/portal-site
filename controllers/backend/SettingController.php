@@ -30,7 +30,10 @@ class SettingController extends DefaultController
     }
 
     public function beforeAction($action) {
-        $this ->enableCsrfValidation = false;
+       
+        if ($action->id == 'change') {
+            $this->enableCsrfValidation = false;
+        }
         return parent::beforeAction($action);
     }
 

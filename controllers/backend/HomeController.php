@@ -11,11 +11,11 @@ use yii\filters\AccessControl;
 class HomeController extends DefaultController
 {
    
-    // public function behaviors()
-    // {
-    //     $behaviors = parent::behaviors();
-    //     return $behaviors;
-    // }
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+        return $behaviors;
+    }
 
     public function actionIndex()
     {

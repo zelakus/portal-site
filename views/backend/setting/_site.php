@@ -19,11 +19,11 @@ use \kouosl\theme\bundles\SettingAsset;
       </tr>
     </thead>
     <tbody>
-      <?= $this->render('signup', ['signup' => $signup] ) ?>
-      <?= $this->render('contact',['contact' => $contact]) ?>
-      <?= $this->render('login',  ['login' => $login] ) ?>
-      <?= $this->render('about',  ['about' => $about] ) ?>   
-      <?= $this->render('language',['language' => $language]) ?>
+      <?= $this->render('signup',  ['signup' => $signup] )     ?>
+      <?= $this->render('contact', ['contact' => $contact] )   ?>
+      <?= $this->render('login',   ['login' => $login] )       ?>
+      <?= $this->render('about',   ['about' => $about] )       ?>   
+      <?= $this->render('language',['language' => $language] ) ?>
      
     </tbody>
   </table>
