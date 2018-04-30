@@ -1,13 +1,17 @@
 {
-    "name": "kouosl/site",
-    "description": "Yii2 KouOsl site Module Integration",
+    "name": "kouosl/portal-site",
+    "description": "Site module for KOUOSL",
     "type": "yii2-extension",
     "keywords": ["yii2", "yii 2", "samples", "sample", "module", "modules"],
     "license": "BSD-3-Clause",
     "authors": [
         {
             "name": "İbrahim Aşık",
-            "email": "info@kouosl.com.tr"
+            "email": "info@kouosl.org"
+        },
+        {
+            "name": "Ekrem HATİPOĞLU",
+            "email": "ekrem.hatipoglu@outlook.com"
         }
     ],
     "autoload": {
