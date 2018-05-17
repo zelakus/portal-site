@@ -8,5 +8,5 @@ use yii\helpers\Html;
 ?>
   <tr id="row-login">
         <td class="text-center">Login</td>
-        <td class="text-center"><?= Html::checkbox('login',$login,['class' => 'make-switch','checked' => false,'onchange' => 'edit({ loginAllow: $(this).is(":checked") , type : \'login\'},\'login\')']) ?></td>
+        <td class="text-center"><?= Html::checkbox('login',$login,['class' => 'make-switch','checked' => false,'onchange' => 'edit({ login: $(this).is(":checked") , key : \'login\'},\'login\')']) ?></td>
       </tr>   

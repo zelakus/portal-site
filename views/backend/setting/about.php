@@ -8,5 +8,5 @@ use yii\helpers\Html;
 ?>
  <tr id="row-about">
         <td class="text-center">About</td>
-        <td class="text-center"><?= Html::checkbox('about',$about,['class' => 'make-switch','onchange' => 'edit({ aboutAllow: $(this).is(":checked") , type : \'about\'},\'about\')']) ?></td>
+        <td class="text-center"><?= Html::checkbox('about',$about,['class' => 'make-switch','onchange' => 'edit({ about: $(this).is(":checked") , key : \'about\'},\'about\')']) ?></td>
       </tr>    

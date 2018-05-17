@@ -9,12 +9,10 @@ $content_name = array();
 foreach($contents as $item){
     $content_name[$item['id']] = $item['name'];
 }
-print_r($content_name);
-
 ?>
   <tr id="row-home">
         <td class="text-center">Home Page</td>
-        <td class="text-center"><?= Html::dropDownList('home', 'home', $content_name, ['id'=>'home' , 'onchange' => 'edit({ home: this.options[this.selectedIndex].value , type : \'home\'},\'home\')','options' => [ $selectedHome => ['Selected'=>'selected']]]); ?></td>
+        <td class="text-center"><?= Html::dropDownList('home', 'home', $content_name, ['id'=>'home' , 'onchange' => 'edit({ home: this.options[this.selectedIndex].value , key : \'home\'},\'home\')','options' => [ $selectedHome => ['Selected'=>'selected']]]); ?></td>
 </tr>   
 
  

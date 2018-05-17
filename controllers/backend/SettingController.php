@@ -46,33 +46,8 @@ class SettingController extends DefaultController
         if(Yii::$app->request->isAjax){
             \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
             $postParams = Yii::$app->request->post();
-            $settings = Setting::findOne(['setting_key' =>  $postParams['type']]);
-            switch ($postParams['type']) {
-                case 'signup':
-                    $settings->value = $postParams['signupAllow'];
-                    break;
-                case 'contact':
-                      $settings->value = $postParams['contactAllow'];
-                      break;
-                 case 'login':
-                     $settings->value = $postParams['loginAllow'];
-                    break;
-                case 'about':
-                     $settings->value = $postParams['aboutAllow'];
-                    break;
-                case 'language':
-                    $settings->value = $postParams['language'];
-                   break;
-                case 'title':
-                    $settings->value = $postParams['titleChange'];
-                   break;
-                case 'home':
-                    $settings->value = $postParams['home'];
-                   break;
-                default:
-                    # code...
-                    break;
-            }
+            $settings = Setting::findOne(['setting_key' =>  $postParams['key']]);
+            $settings->value = $postParams[$postParams['key']];
             return ['result' => $settings->save()] ;
 
         }
