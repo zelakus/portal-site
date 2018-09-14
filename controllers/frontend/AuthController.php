@@ -11,6 +11,7 @@ use kouosl\site\models\PasswordResetRequestForm;
 use kouosl\site\models\ResetPasswordForm;
 use kouosl\site\models\SignupForm;
 use kouosl\site\models\ContactForm;
+use kouosl\site\models\Setting;
 use yii\filters\Cors;
 /**
  * Site controller
@@ -86,6 +87,8 @@ class AuthController extends DefaultController
      */
     public function actionLogin()
     {
+
+        if(Setting::findOne(['setting_key' => 'login'])->value === 'true'){
         $request = Yii::$app->request;
         if ($request->isPost) {
 
@@ -124,6 +127,7 @@ class AuthController extends DefaultController
             }
         }
     }
+    }
 
     /**
      * Logs out the current user.
@@ -132,6 +136,7 @@ class AuthController extends DefaultController
      */
     public function actionLogout()
     {
+        
         Yii::$app->user->logout();
 
         return $this->goHome();
@@ -144,6 +149,8 @@ class AuthController extends DefaultController
      */
     public function actionContact()
     {
+        if(Setting::findOne(['setting_key' => 'contact'])->value === 'true'){
+
         $model = new ContactForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail(Yii::$app->params['adminEmail'])) {
@@ -157,7 +164,7 @@ class AuthController extends DefaultController
             return $this->render('contact', [
                 'model' => $model,
             ]);
-        }
+        }}
     }
 
     /**
@@ -167,7 +174,10 @@ class AuthController extends DefaultController
      */
     public function actionAbout()
     {
+        if(Setting::findOne(['setting_key' => 'login'])->value === 'true'){
+
         return $this->render('about');
+        }
     }
 
     /**
@@ -177,6 +187,7 @@ class AuthController extends DefaultController
      */
     public function actionSignup()
     {
+        if(Setting::findOne(['setting_key' => 'login'])->value === 'true'){
 
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post())) {
@@ -189,6 +200,7 @@ class AuthController extends DefaultController
         return $this->render('signup', [
             'model' => $model,
         ]);
+        }
     }
 
     /**

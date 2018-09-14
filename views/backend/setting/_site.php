@@ -23,7 +23,9 @@ use \kouosl\theme\bundles\SettingAsset;
       <?= $this->render('contact', ['contact' => $contact] )   ?>
       <?= $this->render('login',   ['login' => $login] )       ?>
       <?= $this->render('about',   ['about' => $about] )       ?>   
-      <?= $this->render('language',['language' => $language] ) ?>
+      <?= $this->render('language',['language' =>   $language] ) ?>
+      <?= $this->render('title',   ['title' => $title] ) ?>
+      <?= $this->render('home',   ['contents' => $home,'selectedHome'=> $selectedHome] ) ?>
      
     </tbody>
   </table>

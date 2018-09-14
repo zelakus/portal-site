@@ -9,9 +9,5 @@ use yii\helpers\Html;
 
 <tr id="row-signup">
         <td class="text-center">Signup</td>
-        <td class="text-center"><?= Html::checkbox('signup',$signup,['class' => 'make-switch','onchange' => 'edit({ signupAllow: $(this).is(":checked") , type : \'signup\'},\'signup\')']) ?></td>
-        <!--  <label class="switch">
-                        <input type="checkbox"  onchange = 'edit({ signupAllow: $(this).is(":checked") , type : "signup"},"signup")'>
-                         <span class="slider round"></span>
-                </label> -->
+        <td class="text-center"><?= Html::checkbox('signup',$signup,['class' => 'make-switch','onchange' => 'edit({ signup: $(this).is(":checked") , key : \'signup\'},\'signup\')']) ?></td>
 </tr>

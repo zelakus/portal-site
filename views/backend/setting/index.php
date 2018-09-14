@@ -16,11 +16,18 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
     <?= $this->render('_site',[
-        'signup' => $signup === 'true'? true: false,
-        'contact' => $contact === 'true'? true: false,
-        'login' => $login=== 'true'? true: false,
-        'about' => $about === 'true'? true: false,
-        'language' => $language]) ?>
+        'signup' => $settings['signup'] === 'true'? true: false,
+        'contact' =>  $settings['contact'] === 'true'? true: false,
+        'login' =>  $settings['login']=== 'true'? true: false,
+        'about' => $settings['about']=== 'true'? true: false,
+        'language' =>  $settings['language'],
+        'title' => $settings['title'],
+        'selectedHome' => $settings['home'],
+        'home' =>  $contents
+        
+        ]
+    ); 
+        ?>
    
 
     
