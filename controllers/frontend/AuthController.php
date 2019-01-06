@@ -253,7 +253,10 @@ class AuthController extends DefaultController
     }
 
     public function actionLang($lang){
+        $a = explode('-',$lang);
+        $lng = end($a);
+        Yii::$app->getDb()->createCommand('UPDATE setting SET value= \'' . $lng . '\' WHERE setting_key=\'language\'')->execute();
         yii::$app->session->set('lang',$lang);
-        return $this->goHome();
+        return $this->redirect('/platformer',302)->send(); //$this->goHome();
     }
 }
